@@ -7,3 +7,23 @@ class Place(models.Model):
     description_long = models.TextField(blank=True, null=True)
     coordinate_lng = models.FloatField(blank=True, null=True)
     coordinate_lat = models.FloatField(blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+
+    class Meta:
+        verbose_name_plural = "Локации"
+
+
+class ImagePlace(models.Model):
+    title = models.CharField(max_length=256)
+    image = models.ImageField(upload_to = "images/")
+    place = models.ForeignKey(Place, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title
+
+
+    class Meta:
+        verbose_name_plural = "Картинки"
