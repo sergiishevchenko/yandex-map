@@ -123,6 +123,7 @@
 
 </head>
 <body>
+  {{ places|json_script:"locations" }}
   <div id="sidebar">
     <div id="sidebar-app"></div>
   </div>
@@ -187,7 +188,7 @@
       return JSON.parse(element.textContent);
     }
 
-    let places = loadJSON('places-geojson');
+    let places = loadJSON('locations');
     log.debug('Load GeoJSON for places', places);
 
 
