@@ -19,6 +19,7 @@ class Place(models.Model):
 class ImagePlace(models.Model):
     title = models.CharField(max_length=256)
     image = models.ImageField()
+    position = models.PositiveIntegerField(default=0)
     place = models.ForeignKey(Place, related_name='imgs', on_delete=models.CASCADE)
 
     def __str__(self):
