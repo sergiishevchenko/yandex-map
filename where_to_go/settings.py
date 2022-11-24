@@ -2,13 +2,18 @@ import os
 
 from pathlib import Path
 
+from environs import Env
+
+env = Env()
+env.read_env()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = env.str("SECRET_KEY")
 
-DEBUG = os.environ.get('DEBUG', default=False)
+DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', default=['*'])
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -84,12 +89,12 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_URL = os.environ.get('STATIC_URL')
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static/'),
 ]
 
-MEDIA_URL = os.environ.get('MEDIA_URL')
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
