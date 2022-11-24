@@ -1,22 +1,13 @@
 # Проект where_to_go - Яндекс.Афиша
 
+Задание:
+#### Создать Django-проект
+#### Сделать API с данными от Артёма
+#### Сделать админку максимально удобной для заполнения
 
 ## Настройка и запуск
 
 Для успешного запуска необходимо указать переменные окружения в файле `.env` в корне проекта.
-
-**Формат `.env` файла:**
-
-ENV=.env
-
-# General Django vars
-SECRET_KEY=
-DEBUG=
-ALLOWED_HOSTS=
-
-# Media & static files
-MEDIA_URL=/media/
-STATIC_URL=/static/
 
 # Как запустить проект локально?
 git clone <SSH address of this repo>
