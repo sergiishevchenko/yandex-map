@@ -3,6 +3,7 @@ import json
 from django.shortcuts import render
 from .models import Place
 from django.http import HttpResponse
+from django.urls import reverse
 
 
 def show_places(request):
@@ -17,7 +18,7 @@ def show_places(request):
             "properties": {
                 "title": place.title,
                 "placeId": place.id,
-                "detailsUrl": ""
+                "detailsUrl": 'static/empty.json'
             }
         }
         features.append(feature)
