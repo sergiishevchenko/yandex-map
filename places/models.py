@@ -28,6 +28,7 @@ class ImagePlace(models.Model):
 
     class Meta:
         verbose_name_plural = "Картинки"
+        ordering = ['position']
 
     @property
     def image_preview(self):
