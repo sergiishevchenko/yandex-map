@@ -28,3 +28,10 @@ class ImagePlace(models.Model):
 
     class Meta:
         verbose_name_plural = "Картинки"
+
+    @property
+    def image_preview(self):
+        from django.utils.html import format_html
+        return format_html(
+            '<a href="{0}" target="_blank">'
+            '<img src="{0}" style="width: 65px;" /></a>'.format(self.image.url))

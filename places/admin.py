@@ -6,7 +6,8 @@ class ImagePlaceInline(admin.TabularInline):
     model = ImagePlace
     exclude = ()
     extra = 0
-    fields = ('image', 'position',)
+    fields = ('image', 'image_preview', 'position',)
+    readonly_fields = ('image_preview',)
 
 
 @admin.register(Place)
