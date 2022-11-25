@@ -21,4 +21,4 @@ python manage.py createsuperuser
 python3 manage.py runserver
 
 ### Деплой
-Вы можете посмотреть задеплоенный проект по ссылке - .
+Вы можете посмотреть задеплоенный проект по ссылке - https://serg8989.pythonanywhere.com/places.
