@@ -21,5 +21,11 @@ python manage.py createsuperuser
 python3 manage.py runserver
 ```
 
+## Добавить новую локацию
+В командной строке нужно ввести следующую команду
+```
+python manage.py load_place <json file link>
+```
+
 ## Деплой
 Вы можете посмотреть задеплоенный проект по ссылке - https://serg8989.pythonanywhere.com/places.
