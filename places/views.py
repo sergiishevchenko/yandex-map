@@ -18,7 +18,7 @@ def show_places(request):
             "properties": {
                 "title": place.title,
                 "placeId": place.id,
-                "detailsUrl": 'static/empty.json'
+                "detailsUrl": reverse('place_detail_info', args=[place.id])
             }
         }
         features.append(feature)
