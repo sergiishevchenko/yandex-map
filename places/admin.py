@@ -8,6 +8,10 @@ class ImagePlaceInline(SortableTabularInline):
     extra = 0
     readonly_fields = ('image_preview',)
 
+    def image_preview(self, obj):
+        from django.utils.html import format_html
+        return format_html('<img src="{}" style="height: 200px"/>'.format(obj.image.url))
+
 
 @admin.register(Place)
 class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
