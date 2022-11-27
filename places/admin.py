@@ -6,7 +6,6 @@ from adminsortable2.admin import SortableAdminBase, SortableTabularInline
 class ImagePlaceInline(SortableTabularInline):
     model = ImagePlace
     extra = 0
-    exclude = ('title',)
     readonly_fields = ('image_preview',)
 
 
