@@ -2,8 +2,8 @@ import requests
 import uuid
 
 from django.core.management.base import BaseCommand
-from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
+from django.core.files.base import ContentFile
 
 from places.models import Place, ImagePlace
 
@@ -15,20 +15,20 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         response = requests.get(kwargs['link'])
+        try:
+            response.raise_for_status()
+        except Exception as e:
+            print('Ошибка при загрузке новой локации: ' + str(e))
         place_json = response.json()
-        place, created = Place.objects.get_or_create(
+        place, created = Place.objects.update_or_create(
             title=place_json['title'],
-            description_short=place_json['description_short'],
-            description_long=place_json['description_long'],
-            coordinate_lng=place_json['coordinates']['lng'],
-            coordinate_lat=place_json['coordinates']['lat'],
+            description_short=place_json.get('description_short', None),
+            description_long=place_json.get('description_long', None),
+            coordinate_lng=place_json.get('coordinates', {}).get('lng', None),
+            coordinate_lat=place_json.get('coordinates', {}).get('lat', None),
         )
         for img in place_json['imgs']:
-            r = requests.get(img)
-            img_temp = NamedTemporaryFile(delete=True)
-            img_temp.write(r.content)
-            img_temp.flush()
-
+            image_request = requests.get(img)
+            content_file = ContentFile(image_request.content)
             image_place = ImagePlace.objects.create(place=place)
-
-            image_place.image.save("{}".format(uuid.uuid4()), File(img_temp), save=True)
+            image_place.image.save("{}".format(uuid.uuid4()), content_file)
