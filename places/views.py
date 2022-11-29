@@ -1,9 +1,8 @@
-import json
-
 from django.shortcuts import render
-from .models import Place
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.urls import reverse
+
+from .models import Place
 
 
 def show_places(request):
@@ -13,7 +12,7 @@ def show_places(request):
             "type": "Feature",
             "geometry": {
                 "type": "Point",
-                "coordinates": [ place.coordinate_lng, place.coordinate_lat]
+                "coordinates": [place.coordinate_lng, place.coordinate_lat]
             },
             "properties": {
                 "title": place.title,
@@ -26,7 +25,8 @@ def show_places(request):
         "type": "FeatureCollection",
         "features": features
     }
-    return render(request, 'index.html', context={"places":places})
+    return render(request, 'index.html', context={"places": places})
+
 
 def place_detail_info(request, id):
     place = Place.objects.filter(id=id).first()
@@ -43,4 +43,4 @@ def place_detail_info(request, id):
             "lng": place.coordinate_lng
         }
     }
-    return HttpResponse(json.dumps(json_response, ensure_ascii=False, indent=4), content_type="application/json")
+    return JsonResponse(json_response, json_dumps_params={'indent': 4, 'ensure_ascii': False})
