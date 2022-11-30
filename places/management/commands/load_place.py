@@ -2,7 +2,6 @@ import requests
 import uuid
 
 from django.core.management.base import BaseCommand
-from django.core.files.temp import NamedTemporaryFile
 from django.core.files.base import ContentFile
 
 from places.models import Place, ImagePlace
@@ -21,13 +20,13 @@ class Command(BaseCommand):
             print('Ошибка при загрузке новой локации: ' + str(e))
         place_json = response.json()
         place, created = Place.objects.update_or_create(
-            title=place_json['title'],
-            description_short=place_json.get('description_short', None),
-            description_long=place_json.get('description_long', None),
-            coordinate_lng=place_json.get('coordinates', {}).get('lng', None),
-            coordinate_lat=place_json.get('coordinates', {}).get('lat', None),
+            title=place_json.get('title', ''),
+            description_short=place_json.get('description_short', ''),
+            description_long=place_json.get('description_long', ''),
+            lng=place_json.get('coordinates', {}).get('lng', ''),
+            lat=place_json.get('coordinates', {}).get('lat', ''),
         )
-        for img in place_json['imgs']:
+        for img in place_json.get('imgs', []):
             image_request = requests.get(img)
             content_file = ContentFile(image_request.content)
             image_place = ImagePlace.objects.create(place=place)
