@@ -13,7 +13,7 @@ class Place(models.Model):
         return self.title
 
     class Meta:
-        verbose_name_plural = "Локации"
+        verbose_name_plural = 'Локации'
 
 
 class ImagePlace(models.Model):
@@ -22,5 +22,5 @@ class ImagePlace(models.Model):
     place = models.ForeignKey(Place, related_name='imgs', on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name_plural = "Картинки"
+        verbose_name_plural = 'Картинки'
         ordering = ['position']
