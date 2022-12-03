@@ -6,6 +6,7 @@ from django.core.files.base import ContentFile
 
 from places.models import Place, ImagePlace
 
+
 class Command(BaseCommand):
     help = 'Upload new places from json files'
 
@@ -18,16 +19,26 @@ class Command(BaseCommand):
             response.raise_for_status()
         except Exception as e:
             print('Ошибка при загрузке новой локации: ' + str(e))
-        place_json = response.json()
+        place_data = response.json()
         place, created = Place.objects.update_or_create(
-            title=place_json.get('title', ''),
-            description_short=place_json.get('description_short', ''),
-            description_long=place_json.get('description_long', ''),
-            lng=place_json.get('coordinates', {}).get('lng', ''),
-            lat=place_json.get('coordinates', {}).get('lat', ''),
+            title=place_data['title'],
+            description_short=place_data.get('description_short', ''),
+            description_long=place_data.get('description_long', ''),
+            lng=place_data['coordinates']['lng'],
+            lat=place_data['coordinates']['lat'],
+            defaults={'title': place_data['title'],
+                      'description_short': place_data.get('description_short', ''),
+                      'description_long': place_data.get('description_long', ''),
+                      'lng': place_data['coordinates']['lng'],
+                      'lat': place_data['coordinates']['lat']
+                    },
         )
-        for img in place_json.get('imgs', []):
-            image_request = requests.get(img)
-            content_file = ContentFile(image_request.content)
-            image_place = ImagePlace.objects.create(place=place)
-            image_place.image.save("{}".format(uuid.uuid4()), content_file)
+        if created:
+            for img in place_data.get('imgs', []):
+                image_response = requests.get(img)
+                try:
+                    image_response.raise_for_status()
+                except Exception as e:
+                    print('Ошибка при загрузке новой фотографии: ' + str(e))
+                image_place = ImagePlace.objects.create(place=place)
+                image_place.image.save('{}'.format(uuid.uuid4()), ContentFile(image_response.content))
