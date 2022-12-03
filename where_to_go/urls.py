@@ -11,5 +11,5 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('places', show_places, name='places_list'),
-    path('places/<id>', place_detail_info, name='place_detail_info'),
+    path('places/<pk>', place_detail_info, name='place_detail_info'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
