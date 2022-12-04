@@ -20,18 +20,11 @@ class Command(BaseCommand):
         except Exception as e:
             print('Ошибка при загрузке новой локации: ' + str(e))
         place_data = response.json()
-        place, created = Place.objects.update_or_create(
+        place, created = Place.objects.get_or_create(
             title=place_data['title'],
-            description_short=place_data.get('description_short', ''),
-            description_long=place_data.get('description_long', ''),
             lng=place_data['coordinates']['lng'],
             lat=place_data['coordinates']['lat'],
-            defaults={'title': place_data['title'],
-                      'description_short': place_data.get('description_short', ''),
-                      'description_long': place_data.get('description_long', ''),
-                      'lng': place_data['coordinates']['lng'],
-                      'lat': place_data['coordinates']['lat']
-                    },
+            defaults={'description_short': place_data.get('description_short', ''), 'description_long': place_data.get('description_long', '')},
         )
         if created:
             for img in place_data.get('imgs', []):
