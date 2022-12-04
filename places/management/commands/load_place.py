@@ -19,15 +19,16 @@ class Command(BaseCommand):
             response.raise_for_status()
         except Exception as e:
             return 'Ошибка при загрузке новой локации: {}'.format(str(e))
-        place_data = response.json()
+
+        raw_place = response.json()
         place, created = Place.objects.get_or_create(
-            title=place_data['title'],
-            lng=place_data['coordinates']['lng'],
-            lat=place_data['coordinates']['lat'],
-            defaults={'description_short': place_data.get('description_short', ''), 'description_long': place_data.get('description_long', '')},
+            title=raw_place['title'],
+            lng=raw_place['coordinates']['lng'],
+            lat=raw_place['coordinates']['lat'],
+            defaults={'description_short': raw_place.get('description_short', ''), 'description_long': raw_place.get('description_long', '')},
         )
         if created:
-            for img in place_data.get('imgs', []):
+            for img in raw_place.get('imgs', []):
                 image_response = requests.get(img)
                 try:
                     image_response.raise_for_status()
