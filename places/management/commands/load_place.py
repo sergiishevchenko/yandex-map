@@ -18,7 +18,7 @@ class Command(BaseCommand):
         try:
             response.raise_for_status()
         except Exception as e:
-            print('Ошибка при загрузке новой локации: ' + str(e))
+            return 'Ошибка при загрузке новой локации: {}'.format(str(e))
         place_data = response.json()
         place, created = Place.objects.get_or_create(
             title=place_data['title'],
@@ -32,6 +32,6 @@ class Command(BaseCommand):
                 try:
                     image_response.raise_for_status()
                 except Exception as e:
-                    print('Ошибка при загрузке новой фотографии: ' + str(e))
+                    return 'Ошибка при загрузке новой фотографии: {}'.format(str(e))
                 image_place = ImagePlace.objects.create(place=place)
                 image_place.image.save('{}'.format(uuid.uuid4()), ContentFile(image_response.content))
