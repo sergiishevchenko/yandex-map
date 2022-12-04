@@ -33,5 +33,5 @@ class Command(BaseCommand):
                     image_response.raise_for_status()
                 except Exception as e:
                     return 'Ошибка при загрузке новой фотографии: {}'.format(str(e))
-                image_place = ImagePlace.objects.create(place=place)
-                image_place.image.save('{}'.format(uuid.uuid4()), ContentFile(image_response.content))
+                content_file = ContentFile(image_response.content, '{}'.format(uuid.uuid4()))
+                ImagePlace.objects.create(place=place, image=content_file)
